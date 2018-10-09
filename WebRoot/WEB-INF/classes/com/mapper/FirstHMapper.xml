@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mapper.FirstHMapper">
+	
+	<select id="getFirstList" resultType="com.bean.FirstHBean">
+		select * from FirstH
+	</select>
+	
+	<select id="getSecondList" parameterType="java.lang.Integer" resultType="com.bean.SecondHBean">
+		select * from SecondH where parentId = #{parentId}
+	</select>
+	
+	<select id="getThirdList" parameterType="java.lang.Integer" resultType="com.bean.ThirdHBean">
+		select * from ThirdH where parentId = #{parentId}
+	</select>
+</mapper>

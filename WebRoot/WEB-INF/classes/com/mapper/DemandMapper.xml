@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.DemandMapper">
+
+	<!-- 获取数据库的总量 需求数目 -->
+	<select id="getCount" resultType="int">
+		select count(*) count from
+		T_DCWJXX
+	</select>
+
+	<!-- 判断需求名称是否存在 -->
+	<select id="getByName" parameterType="java.lang.String"
+		resultType="com.bean.DemandBean">
+		select * from T_DCWJXX where JSXQMC=#{JSXQMC}
+	</select>
+
+	<!-- 添加需求 -->
+	<insert id="saveDemand" parameterType="com.bean.DemandBean">
+		insert into
+		T_DCWJXX(WJID,username,SZDY,SFSH,JGMC,GLBM,TXDZ,DWWZ,DZYX,FRDB,YZBM,LXR,GDDH,YDDH,CZ,JGSX,JGJJ,JSXQMC,QSXQNF,JZXQNF,ZDKJXQGS,GJZ,YJLX,XKFL1,XKFL2,XKFL3,XQJSSSLY,QTJSMS,XQJSYYHY1,XQJSYYHY2,XQJSYYHY3,JSXQHZMS,HZYXDW,NTR,createDate)
+		values(#{WJID},#{username},#{SZDY},#{SFSH},#{JGMC},#{GLBM},#{TXDZ},#{DWWZ},#{DZYX},#{FRDB},#{YZBM},#{LXR},#{GDDH},#{YDDH},#{CZ},#{JGSX},#{JGJJ},#{JSXQMC},#{QSXQNF},#{JZXQNF},#{ZDKJXQGS},#{GJZ},#{YJLX},#{XKFL1},#{XKFL2},#{XKFL3},#{XQJSSSLY},#{QTJSMS},#{XQJSYYHY1},#{XQJSYYHY2},#{XQJSYYHY3},#{JSXQHZMS},#{HZYXDW},#{NTR},#{createDate})
+	</insert>
+
+	<!-- 更新审核的状态 -->
+	<update id="updateSFSH" parameterType="com.bean.DemandBean">
+		update T_DCWJXX set
+		SFSH=#{SFSH},V=#{V} where WJID=#{WJID}
+	</update>
+
+	<!-- 未审核的需求 -->
+	<select id="getListNo" resultType="com.bean.DemandBean">
+		select * from T_DCWJXX where
+		SFSH=0
+	</select>
+
+	<!-- 根据id查看详细信息 -->
+	<select id="getById" parameterType="java.lang.String"
+		resultType="com.bean.DemandBean">
+		select * from T_DCWJXX where WJID= #{WJID}
+	</select>
+	
+	<!-- 以列表形式显示，用户已提交的问卷 -->
+	<select id="getMyList" parameterType="java.lang.String" resultType="com.bean.DemandBean">
+		select * from T_DCWJXX where username=#{username}
+	</select>
+	
+	<!-- 带条件的搜索，通过name -->
+	<select id="getByLikeName" parameterType="java.lang.String" resultType="com.bean.DemandBean">
+		select * from T_DCWJXX where JSXQMC like '%${value}%'
+	</select>
+	
+	<!-- 获取所有需求 -->
+	<select id="getList" resultType="com.bean.DemandBean">
+		select * from T_DCWJXX
+	</select>
+	
+	<!-- 获取每一个分页数据 -->
+	<select id="getListPage" resultType="com.bean.DemandBean">
+		select top #{0} * from T_DCWJXX where(WJID not in(select top #{1} WJID from T_DCWJXX))
+	</select>
+	
+	<!-- 显示基础研究的集合 -->
+	<select id="getTypeList" resultType="java.lang.String">
+		select distinct YJLX from T_DCWJXX
+	</select>
+	
+	<!-- 显示学科分类第一级 -->
+	<select id="getXKFLListA" resultType="java.lang.String">
+		select distinct XKFL1 from T_DCWJXX
+	</select>
+	
+	<!-- 显示学科分类第二级 -->
+	<select id="getXKFLListB" parameterType="java.lang.String" resultType="java.lang.String">
+		select distinct XKFL2 from T_DCWJXX where XKFL1 = #{type}
+	</select>
+	
+	<!-- 显示学科分类第三级 -->
+	<select id="getXKFLListC" parameterType="java.lang.String" resultType="java.lang.String">
+		select distinct XKFL3 from T_DCWJXX where XKFL2 = #{type}
+	</select>
+	
+	<!-- 显示国民经济行业第一级 -->
+	<select id="getXQJSYYHYListA" resultType="java.lang.String">
+		select distinct XQJSYYHY1 from T_DCWJXX
+	</select>
+	
+	<!-- 显示国民经济分类第二级 -->
+	<select id="getXQJSYYHYListB" parameterType="java.lang.String" resultType="java.lang.String">
+		select distinct XQJSYYHY2 from T_DCWJXX where XQJSYYHY1 = #{type};
+	</select>
+	
+	<!-- 显示国民经济行业第三级 -->
+	<select id="getXQJSYYHYListC" parameterType="java.lang.String" resultType="java.lang.String">
+		select distinct XQJSYYHY3 from T_DCWJXX where XQJSYYHY2 = #{type};	
+	</select>
+	
+	<!-- 获取n页的数据 -->
+	<select id="getListNext" parameterType="java.lang.String" resultType="com.bean.DemandBean">
+		select * from T_DCWJXX where YJLX = #{next}
+	</select>
+	
+	<select id="getListAX" parameterType="java.lang.String" resultType="com.bean.DemandBean">
+		select * from T_DCWJXX where XKFL1 = #{next}
+	</select>
+	
+	<select id="getListBX" resultType="com.bean.DemandBean">
+		select * from T_DCWJXX where XKFL2 = #{0} and XKFL1 = #{1}
+	</select>
+	
+	<select id="getListCX" resultType="com.bean.DemandBean">
+		select * from T_DCWJXX where XKFL3 = #{0} and XKFL2 = #{1}
+	</select> 
+	
+	<select id="getListAH" parameterType="java.lang.String" resultType="com.bean.DemandBean">
+		select * from T_DCWJXX where XQJSYYHY1 = #{next}
+	</select>
+	
+	<select id="getListBH" resultType="com.bean.DemandBean">
+		select * from T_DCWJXX where XQJSYYHY2 = #{0} and XQJSYYHY1 = #{1}
+	</select>
+	
+	<select id="getListCH" resultType="com.bean.DemandBean">
+		select * from T_DCWJXX where XQJSYYHY3 = #{0} and XQJSYYHY2 = #{1}
+	</select>
+	
+	<select id="getWeishenhe" resultType="java.lang.Integer">
+		select count(*) as s from T_DCWJXX where SFSH=0
+	</select>
+	
+	<select id="getShenhe" resultType="java.lang.Integer">
+		select count(*) as s from T_DCWJXX where SFSH!=0
+	</select>
+	
+	<select id="getTongguo" resultType="java.lang.Integer">
+		select count(*) as s from T_DCWJXX where SFSH=1
+	</select>
+	
+	<select id="getTuihui" resultType="java.lang.Integer">
+		select count(*) as s from T_DCWJXX where SFSH=2
+	</select>
+	
+	<select id="xdshPolicy" resultType="com.bean.DemandBean">
+		select * from T_DCWJXX
+		<where>
+			<if test="num = 1">
+				#{sType0} like '%${q0}%'
+			</if>
+			<if test="num = 2">
+				<if test="logic1 == 'AND'">
+					#{sType0} like '%${q0}%' #{logic1} #{sType1} like '%${q1}%'
+				</if>
+				<if test="logic1 == 'OR'">
+					(#{sType0} like '%${q0}%' #{logic1} #{sType1} like '%${q1}%')
+				</if>
+				<if test="logic1 == 'NOT'">
+					#{sType0} like '%${q0}%' and #{sType1} not like '%${q1}%'
+				</if>
+			</if>
+			<if test="num = 3">
+				<if test="logic2 == 'AND'">
+					<if test="logic1 == 'AND'">
+						#{sType0} like '%${q0}%' #{logic1} #{sType1} like '%${q1}%' #{logic2} #{sType2} like '%${q2}%'
+					</if>
+					<if test="logic1 == 'OR'">
+						(#{sType0} like '%${q0}%' #{logic1} #{sType1} like '%${q1}%' #{logic2} #{sType2} like '%${q2}%')
+					</if>
+					<if test="logic1 == 'NOT'">
+						#{sType0} like '%${q0}%' and #{sType1} not like '%${q1}%' and #{sType2} not like '%${q2}%'
+					</if>
+				</if>
+				
+				<if test="logic2 == 'OR'">
+					<if test="logic1 == 'AND'">
+						#{sType0} like '%${q0}%' #{logic1} (#{sType1} like '%${q1}%' #{logic2} #{sType2} like '%${q2}%')
+					</if>
+					<if test="logic1 == 'OR'">
+						(#{sType0} like '%${q0}%' #{logic1} #{sType1} like '%${q1}%' #{logic2} #{sType2} like '%${q2}%')
+					</if>
+					<if test="logic1 == 'NOT'">
+						(#{sType0} like '%${q0}%' and #{sType1} not like '%${q1}%') #{logic2} #{sType2} like '%${q2}%'
+					</if>			
+				</if>
+				<if test="logic2 == 'NOT'">
+					<if test="logic1 == 'AND'">
+						#{sType0} like '%${q0}%' #{logic1} #{sType1} like '%${q1}%' and #{sType2} not like '%${q2}%'
+					</if>
+					<if test="logic1 == 'OR'">
+						(#{sType0} like '%${q0}%' #{logic1} #{sType1} like '%${q1}%') and #{sType2} not like '%${q2}%')
+					</if>
+					<if test="logic1 == 'NOT'">
+						#{sType0} like '%${q0}%' and #{sType1} not like '%${q1}%' and #{sType2} not like '%${q2}%'
+					</if>
+				</if>
+			</if>
+		</where>
+	</select>
+</mapper>

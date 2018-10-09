@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mapper.FirstXMapper">
+	
+	<select id="getFirstList" resultType="com.bean.FirstXBean">
+		select * from FirstX
+	</select>
+	
+	<select id="getSecondList" parameterType="java.lang.Integer" resultType="com.bean.SecondXBean">
+		select * from SecondX where parentId = #{parentId}
+	</select>
+	
+	<select id="getThirdList" parameterType="java.lang.Integer" resultType="com.bean.ThirdXBean">
+		select * from ThirdX where parentId = #{parentId}
+	</select>
+	
+</mapper>

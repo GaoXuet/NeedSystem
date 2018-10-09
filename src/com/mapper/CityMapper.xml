@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mapper.CityMapper">
+	
+	<select id="getCityById" parameterType="java.lang.Integer" resultType="com.bean.CityBean">
+		select * from city where id = #{id}
+	</select>
+	
+	<select id="getCityList" parameterType="java.lang.String" resultType="com.bean.CityBean">
+		select * from city where province_id = #{provinceId}
+	</select>
+	
+</mapper>
